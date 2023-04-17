@@ -1,0 +1,21 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package B6_CRUDListFixCung_Swing.P2_BaiChua;
+
+import java.util.List;
+
+/**
+ *
+ * @author hangnt
+ */
+public interface NhanVienService {
+
+    List<NhanVien> fakeData();
+
+    String addNhanVien(List<NhanVien> lists, NhanVien nhanVien);
+
+    List<NhanVien> searchName(List<NhanVien> lists, String name);
+    
+}
