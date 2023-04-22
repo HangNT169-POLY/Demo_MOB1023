@@ -4,6 +4,12 @@
  */
 package B12_BaiMau_CRUD_Full;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +19,13 @@ import java.util.List;
  */
 public class SinhVienService {
 
+    private List<SinhVien> listSinhViens;
+
+    public SinhVienService() {
+        this.listSinhViens = new ArrayList<>();
+    }
+
     public List<SinhVien> fakeData() {
-        List<SinhVien> listSinhViens = new ArrayList<>();
         listSinhViens.add(new SinhVien("1", "ten1", 10, "Nam dinh", 1));
         listSinhViens.add(new SinhVien("2", "a", 15, "Nam dinh1", 2));
         listSinhViens.add(new SinhVien("3", "ten2", 13, "Nam dinh2", 1));
@@ -23,13 +34,13 @@ public class SinhVienService {
         return listSinhViens;
     }
 
-    public void sortByName(List<SinhVien> lists) {
-        lists.sort((o1, o2) -> {
+    public void sortByName() {
+        listSinhViens.sort((o1, o2) -> {
             return o1.getTen().compareTo(o2.getTen());
         });
     }
 
-    public List<SinhVien> searchByName(List<SinhVien> listSinhViens, String name) {
+    public List<SinhVien> searchByName(String name) {
         List<SinhVien> listSearch = new ArrayList<>();
         // code
         for (SinhVien sv : listSinhViens) {
@@ -39,11 +50,56 @@ public class SinhVienService {
         }
         return listSearch;
     }
-    public String addSinhVien(List<SinhVien> listSV, SinhVien sv) {
+
+    public String addSinhVien(SinhVien sv) {
         if (sv != null) {
-            listSV.add(sv);
+            listSinhViens.add(sv);
             return "Add thanh cong";
         }
         return " Add that bai";
+    }
+
+    public String xoaSinhVien(int viTri) {
+        if (viTri != -1) {
+            listSinhViens.remove(viTri);
+            return "Xoa thanh cong";
+        }
+        return " Xoa that bai";
+    }
+    
+    public String ghiFile(String path) {
+        File file = new File(path);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            try (FileOutputStream fos = new FileOutputStream(file); 
+                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                for (SinhVien sinhVien : listSinhViens) {
+                    oos.writeObject(sinhVien);
+                }
+            }
+            return "Ghi file thành công!";
+        } catch (IOException e) {
+            return "Ghi file thất bại";
+        }
+    }
+
+    public String docFile(String path) {
+        File file = new File(path);
+        try {
+            if (!file.exists()) {
+                System.out.println("Không tìm thấy file!");
+            }
+            try (FileInputStream fis = new FileInputStream(file);
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
+                while (fis.available() > 0) {
+                    listSinhViens.add((SinhVien) ois.readObject());
+                }
+            }
+            return "Đọc file thành công!";
+        } catch (IOException | ClassNotFoundException e) {
+            return "Đọc file thất bại";
+        }
     }
 }

@@ -1,6 +1,5 @@
 package B12_BaiMau_CRUD_Full;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,11 +14,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewSinhVien extends javax.swing.JFrame {
 
-    private DefaultTableModel dtm;
-    private List<SinhVien> listSinhViens;
-    private SinhVienService sinhVienService;
-    private DocGhiFile docGhiFile;
-    private String path = "test.txt";
+    private final DefaultTableModel dtm;
+    private final List<SinhVien> listSinhViens;
+    private final SinhVienService sinhVienService;
+    private final String path = "test.txt";
 
     /**
      * Creates new form QLSV
@@ -27,10 +25,8 @@ public class ViewSinhVien extends javax.swing.JFrame {
     public ViewSinhVien() {
         initComponents();
         // tao instance
-        listSinhViens = new ArrayList<>();
         dtm = (DefaultTableModel) tbHienThi.getModel();
         sinhVienService = new SinhVienService();
-        docGhiFile = new DocGhiFile();
 
         // load 5 data
         listSinhViens = sinhVienService.fakeData();
@@ -244,6 +240,11 @@ public class ViewSinhVien extends javax.swing.JFrame {
 
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         tbHienThi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -352,7 +353,7 @@ public class ViewSinhVien extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThoatActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        JOptionPane.showMessageDialog(this, sinhVienService.addSinhVien(listSinhViens, getFormView()));
+        JOptionPane.showMessageDialog(this, sinhVienService.addSinhVien(getFormView()));
         // show table
         showDataTable(listSinhViens);
     }//GEN-LAST:event_btnThemActionPerformed
@@ -365,26 +366,31 @@ public class ViewSinhVien extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String name = txtSearch.getText();
-        List<SinhVien> listSearch = sinhVienService.searchByName(listSinhViens, name);
+        List<SinhVien> listSearch = sinhVienService.searchByName(name);
         // show len table
         showDataTable(listSearch);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnXapXepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXapXepActionPerformed
-        sinhVienService.sortByName(listSinhViens);
+        sinhVienService.sortByName();
         // show table
         showDataTable(listSinhViens);
     }//GEN-LAST:event_btnXapXepActionPerformed
 
     private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
         listSinhViens.clear();
-        JOptionPane.showMessageDialog(this, docGhiFile.docFile(path, listSinhViens));
+        JOptionPane.showMessageDialog(this, sinhVienService.docFile(path));
         showDataTable(listSinhViens);
     }//GEN-LAST:event_btnDocFileActionPerformed
 
     private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
-        JOptionPane.showMessageDialog(this, docGhiFile.ghiFile(path, listSinhViens));
+        JOptionPane.showMessageDialog(this, sinhVienService.ghiFile(path));
     }//GEN-LAST:event_btnGhiFileActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int row = tbHienThi.getSelectedRow();        
+        JOptionPane.showMessageDialog(this, sinhVienService.xoaSinhVien(row));
+    }//GEN-LAST:event_btnXoaActionPerformed
 
     private void fillData(int index) {
         SinhVien sv = listSinhViens.get(index);

@@ -13,9 +13,14 @@ import java.util.List;
  */
 public class NhanVienServiceImpl implements NhanVienService {
 
+    private List<NhanVien> listNhanViens;
+
+    public NhanVienServiceImpl() {
+        this.listNhanViens = new ArrayList<>();
+    }
+
     @Override
     public List<NhanVien> fakeData() {
-        List<NhanVien> listNhanViens = new ArrayList<>();
         listNhanViens.add(new NhanVien("ten1", "Loai 1", true, "Ăn"));
         listNhanViens.add(new NhanVien("ten2", "Loai 2", true, "Ăn Lăn"));
         listNhanViens.add(new NhanVien("ten3", "Loai 3", false, "Ăn"));
@@ -25,18 +30,18 @@ public class NhanVienServiceImpl implements NhanVienService {
     }
 
     @Override
-    public String addNhanVien(List<NhanVien> lists, NhanVien nhanVien) {
+    public String addNhanVien(NhanVien nhanVien) {
         if (nhanVien != null) {
-            lists.add(nhanVien);
+            listNhanViens.add(nhanVien);
             return "Add thanh cong";
         }
         return " Add that bai";
     }
 
     @Override
-    public List<NhanVien> searchName(List<NhanVien> lists, String name) {
+    public List<NhanVien> searchName(String name) {
         List<NhanVien> listSearchTheoTen = new ArrayList<>();
-        for (NhanVien sinhVien : lists) {
+        for (NhanVien sinhVien : listNhanViens) {
             if (sinhVien.getTen().contains(name)) {
                 listSearchTheoTen.add(sinhVien);
             }

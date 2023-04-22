@@ -14,8 +14,8 @@ public interface NhanVienService {
 
     List<NhanVien> fakeData();
 
-    String addNhanVien(List<NhanVien> lists, NhanVien nhanVien);
+    String addNhanVien(NhanVien nhanVien);
 
-    List<NhanVien> searchName(List<NhanVien> lists, String name);
-    
+    List<NhanVien> searchName(String name);
+
 }

@@ -4,7 +4,6 @@
  */
 package B6_CRUDListFixCung_Swing.P2_BaiChua;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,9 +14,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewNhanVien extends javax.swing.JFrame {
 
-    private DefaultTableModel dtm;
-    private List<NhanVien> listNhanViens;
-    private NhanVienService nhanVienService = new NhanVienServiceImpl();
+    private final DefaultTableModel dtm;
+    private final List<NhanVien> listNhanViens;
+    private final NhanVienService nhanVienService;
 
     /**
      * Creates new form HelloFrame
@@ -25,7 +24,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
     public ViewNhanVien() {
         initComponents();
         // code
-        listNhanViens = new ArrayList<>();
+        nhanVienService = new NhanVienServiceImpl();
         dtm = (DefaultTableModel) jTable1.getModel();
 
         // add 5 data cho list
@@ -194,11 +193,11 @@ public class ViewNhanVien extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearch)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -243,7 +242,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        JOptionPane.showMessageDialog(this, nhanVienService.addNhanVien(listNhanViens, getFromView()));
+        JOptionPane.showMessageDialog(this, nhanVienService.addNhanVien(getFromView()));
         // muon show len table => showDataRow
         showDataTable(listNhanViens);
     }//GEN-LAST:event_btnAddActionPerformed
@@ -257,7 +256,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        List<NhanVien>listSearch = nhanVienService.searchName(listNhanViens, txtSearch.getText());
+        List<NhanVien> listSearch = nhanVienService.searchName(txtSearch.getText());
         showDataTable(listSearch);
     }//GEN-LAST:event_btnSearchActionPerformed
 
