@@ -14,27 +14,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewNhanVien extends javax.swing.JFrame {
 
-    private final DefaultTableModel dtm;
-    private final List<NhanVien> listNhanViens;
-    private final NhanVienService nhanVienService;
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private final NhanVienService nhanVienService = new NhanVienServiceImpl();
 
     /**
      * Creates new form HelloFrame
      */
     public ViewNhanVien() {
         initComponents();
-        // code
-        nhanVienService = new NhanVienServiceImpl();
-        dtm = (DefaultTableModel) jTable1.getModel();
-
-        // add 5 data cho list
-        listNhanViens = nhanVienService.fakeData();
 
         // show data mac dinh len table
-        showDataTable(listNhanViens);
+        showDataTable(nhanVienService.getAll());
 
         // fill
-        NhanVien nhanVien = listNhanViens.get(listNhanViens.size() - 1);
+        NhanVien nhanVien = nhanVienService.getAll().get(nhanVienService.getAll().size() - 1);
         txtName.setText(nhanVien.getTen());
     }
 
@@ -244,14 +237,14 @@ public class ViewNhanVien extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         JOptionPane.showMessageDialog(this, nhanVienService.addNhanVien(getFromView()));
         // muon show len table => showDataRow
-        showDataTable(listNhanViens);
+        showDataTable(nhanVienService.getAll());
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // click 
         // cach lay data cua 1 row
         int row = jTable1.getSelectedRow(); // lay ra dong selected
-        NhanVien nhanVien = listNhanViens.get(row);
+        NhanVien nhanVien = nhanVienService.getAll().get(row);
         txtName.setText(nhanVien.getTen());
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -275,6 +268,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
     }
 
     private void showDataTable(List<NhanVien> lists) {
+        dtm = (DefaultTableModel) jTable1.getModel();
         dtm.setRowCount(0);
         for (NhanVien nhanVien : lists) {
             dtm.addRow(nhanVien.toDataRow());

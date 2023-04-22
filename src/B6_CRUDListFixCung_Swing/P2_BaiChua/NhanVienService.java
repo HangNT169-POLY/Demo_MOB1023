@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface NhanVienService {
 
-    List<NhanVien> fakeData();
+    List<NhanVien> getAll();
 
     String addNhanVien(NhanVien nhanVien);
 

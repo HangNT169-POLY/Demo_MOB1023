@@ -13,19 +13,19 @@ import java.util.List;
  */
 public class NhanVienServiceImpl implements NhanVienService {
 
-    private List<NhanVien> listNhanViens;
+    private final List<NhanVien> listNhanViens;
 
     public NhanVienServiceImpl() {
         this.listNhanViens = new ArrayList<>();
-    }
-
-    @Override
-    public List<NhanVien> fakeData() {
         listNhanViens.add(new NhanVien("ten1", "Loai 1", true, "Ăn"));
         listNhanViens.add(new NhanVien("ten2", "Loai 2", true, "Ăn Lăn"));
         listNhanViens.add(new NhanVien("ten3", "Loai 3", false, "Ăn"));
         listNhanViens.add(new NhanVien("ten4", "Loai 1", true, "Lăn"));
         listNhanViens.add(new NhanVien("ten5", "Loai 2", false, "Ăn"));
+    }
+
+    @Override
+    public List<NhanVien> getAll() {
         return listNhanViens;
     }
 

@@ -14,28 +14,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewSinhVien extends javax.swing.JFrame {
 
-    private final DefaultTableModel dtm;
-    private final List<SinhVien> listSinhViens;
-    private final SinhVienService sinhVienService;
-    private final String path = "test.txt";
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private SinhVienService sinhVienService = new SinhVienServiceImpl();
+    private String path = "test.txt";
 
     /**
      * Creates new form QLSV
      */
     public ViewSinhVien() {
         initComponents();
-        // tao instance
-        dtm = (DefaultTableModel) tbHienThi.getModel();
-        sinhVienService = new SinhVienService();
-
-        // load 5 data
-        listSinhViens = sinhVienService.fakeData();
-
-        // goi de load vao table
-        showDataTable(listSinhViens);
-
-        // fill phan tu cuoi cung
-        fillData(listSinhViens.size() - 1);
+        showDataTable(sinhVienService.getAll());
     }
 
     /**
@@ -68,7 +56,7 @@ public class ViewSinhVien extends javax.swing.JFrame {
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         btnThoat = new javax.swing.JButton();
-        btnXapXep = new javax.swing.JButton();
+        btnSapXep = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbHienThi = new javax.swing.JTable();
@@ -221,6 +209,11 @@ public class ViewSinhVien extends javax.swing.JFrame {
 
         btnSua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnThoat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnThoat.setText("Thoát");
@@ -230,11 +223,11 @@ public class ViewSinhVien extends javax.swing.JFrame {
             }
         });
 
-        btnXapXep.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnXapXep.setText("Xắp xếp");
-        btnXapXep.addActionListener(new java.awt.event.ActionListener() {
+        btnSapXep.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSapXep.setText("Sắp xếp");
+        btnSapXep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXapXepActionPerformed(evt);
+                btnSapXepActionPerformed(evt);
             }
         });
 
@@ -248,13 +241,13 @@ public class ViewSinhVien extends javax.swing.JFrame {
 
         tbHienThi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Mã", "Tên", "Tuổi", "Giới tính", "Địa chỉ"
             }
         ));
         tbHienThi.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,7 +296,7 @@ public class ViewSinhVien extends javax.swing.JFrame {
                                 .addGap(109, 109, 109)
                                 .addComponent(btnXoa)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnXapXep)
+                                .addComponent(btnSapXep)
                                 .addGap(101, 101, 101)
                                 .addComponent(btnThoat)))))
                 .addContainerGap(46, Short.MAX_VALUE))
@@ -322,7 +315,7 @@ public class ViewSinhVien extends javax.swing.JFrame {
                     .addComponent(btnThem)
                     .addComponent(btnSua)
                     .addComponent(btnXoa)
-                    .addComponent(btnXapXep)
+                    .addComponent(btnSapXep)
                     .addComponent(btnThoat))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -355,7 +348,7 @@ public class ViewSinhVien extends javax.swing.JFrame {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         JOptionPane.showMessageDialog(this, sinhVienService.addSinhVien(getFormView()));
         // show table
-        showDataTable(listSinhViens);
+        showDataTable(sinhVienService.getAll());
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tbHienThiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbHienThiMouseClicked
@@ -371,16 +364,16 @@ public class ViewSinhVien extends javax.swing.JFrame {
         showDataTable(listSearch);
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnXapXepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXapXepActionPerformed
+    private void btnSapXepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSapXepActionPerformed
         sinhVienService.sortByName();
         // show table
-        showDataTable(listSinhViens);
-    }//GEN-LAST:event_btnXapXepActionPerformed
+        showDataTable(sinhVienService.getAll());
+    }//GEN-LAST:event_btnSapXepActionPerformed
 
     private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
-        listSinhViens.clear();
+        sinhVienService.getAll().clear();
         JOptionPane.showMessageDialog(this, sinhVienService.docFile(path));
-        showDataTable(listSinhViens);
+        showDataTable(sinhVienService.getAll());
     }//GEN-LAST:event_btnDocFileActionPerformed
 
     private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
@@ -388,12 +381,19 @@ public class ViewSinhVien extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGhiFileActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        int row = tbHienThi.getSelectedRow();        
+        int row = tbHienThi.getSelectedRow();
         JOptionPane.showMessageDialog(this, sinhVienService.xoaSinhVien(row));
+        showDataTable(sinhVienService.getAll());
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+       int row = tbHienThi.getSelectedRow();
+        JOptionPane.showMessageDialog(this, sinhVienService.suaSinhVien(row,getFormView()));
+        showDataTable(sinhVienService.getAll());
+    }//GEN-LAST:event_btnSuaActionPerformed
+
     private void fillData(int index) {
-        SinhVien sv = listSinhViens.get(index);
+        SinhVien sv = sinhVienService.getAll().get(index);
         txtMSV.setText(sv.getMaSV());
         txtDiaChi.setText(sv.getDiaChi());
         txtName.setText(sv.getTen());
@@ -411,6 +411,7 @@ public class ViewSinhVien extends javax.swing.JFrame {
     }
 
     private void showDataTable(List<SinhVien> lists) {
+        dtm = (DefaultTableModel) tbHienThi.getModel();
         dtm.setRowCount(0);
         for (SinhVien sv : lists) {
             // add row
@@ -477,11 +478,11 @@ public class ViewSinhVien extends javax.swing.JFrame {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDocFile;
     private javax.swing.JButton btnGhiFile;
+    private javax.swing.JButton btnSapXep;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnThoat;
-    private javax.swing.JButton btnXapXep;
     private javax.swing.JButton btnXoa;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
